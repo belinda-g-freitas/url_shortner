@@ -1,0 +1,16 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model url {
+  id           String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  originalUrl String   @db.VarChar @map("original_url")
+  shortUrl    String   @db.VarChar @map("short_url")
+  urlCode     String   @unique(map: "url_code_key") @db.VarChar @map("url_code")
+  createdAt   DateTime @default(now()) @db.Timestamp(6) @map("created_at")
+}
