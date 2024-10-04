@@ -8,9 +8,9 @@ datasource db {
 }
 
 model url {
-  id           String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  originalUrl String   @db.VarChar @map("original_url")
-  shortUrl    String   @db.VarChar @map("short_url")
-  urlCode     String   @unique(map: "url_code_key") @db.VarChar @map("url_code")
-  createdAt   DateTime @default(now()) @db.Timestamp(6) @map("created_at")
+  id          String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  originalUrl String   @map("original_url") @db.VarChar
+  shortUrl    String   @map("short_url") @db.VarChar
+  urlCode     String   @unique(map: "url_code_key") @map("url_code") @db.VarChar
+  createdAt   DateTime @default(now()) @map("created_at") @db.Timestamp(6)
 }
