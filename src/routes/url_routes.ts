@@ -1,16 +1,16 @@
-import express, { Request, Response } from "express";
+import express, { Request, Response } from 'express';
 const router = express.Router();
-import { nanoid } from "nanoid";
-import { PrismaClient, Prisma } from "@prisma/client";
+import { nanoid } from 'nanoid';
+import { PrismaClient } from '@prisma/client';
 const prisma = new PrismaClient();
 
 // POST route to create a short URL
-router.route("/shorten").post(async (req: Request, res: Response) => {
+router.route('/shorten').post(async (req: Request, res: Response) => {
   const { original_url } = req.body;
   const baseUrl = `http://localhost:${process.env.PORT}`;
 
   if (!original_url) {
-    return res.status(400).json("Invalid request: original_url is required");
+    return res.status(400).json('Invalid request: original_url is required');
   }
 
   // Generate URL code
@@ -40,12 +40,12 @@ router.route("/shorten").post(async (req: Request, res: Response) => {
     res.json(url);
   } catch (err) {
     console.error(err);
-    res.status(500).json("Server error");
+    res.status(500).json('Server error');
   }
 });
 
 // GET route to redirect to the original URL
-router.route("/:code").get(async (req: Request, res: Response) => {
+router.route('/:code').get(async (req: Request, res: Response) => {
   try {
     const url = await prisma.url.findFirst({
       where: { urlCode: req.params.code },
@@ -55,9 +55,9 @@ router.route("/:code").get(async (req: Request, res: Response) => {
       return res.redirect(url.originalUrl);
     }
 
-    res.status(404).json("No URL found");
+    res.status(404).json('No URL found');
   } catch (err) {
     console.error(err);
-    res.status(500).json("Server error");
+    res.status(500).json('Server error');
   }
 });
